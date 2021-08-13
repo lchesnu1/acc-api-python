@@ -27,6 +27,19 @@ class AccClient:
             "session": self.session
         })
         return response["cameras"]
+    
+    def get_servers(self):                                           
+        response = _query("GET", _url(self.address, "server/ids"), { 
+            "session": self.session                                  
+        })                                                           
+        return response["servers"]
+    
+    def destroy(self):
+        # logs out session
+        response = requests.request("POST", _url(self.address, "logout"), params=None,json={"session": self.session} , verify=False)
+        response.raise_for_status()
+        response_data = response.json()
+        return response
 
 
 def _url(address, path):
